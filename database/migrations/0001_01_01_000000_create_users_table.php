@@ -21,9 +21,9 @@ return new class extends Migration
             $table->unsignedInteger('birth_day');
             $table->unsignedInteger('birth_month');
             $table->unsignedInteger('birth_year');
-            $table->enum('role', ['user', 'admin']);
+            $table->enum('role', ['user', 'admin'])->default('user');
             $table->string('country_code', 10)->default('+20');
-            $table->string('phone',30)->nullable();
+            $table->string('phone', 30)->nullable();
             $table->json('location')->nullable();
             $table->string('email');
             $table->string('password');
