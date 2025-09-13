@@ -22,9 +22,9 @@ Route::middleware(ApiKeyMiddleware::class)->group(function () {
             Route::post('logout', 'logout');
         });
 
-        Route::controller(ProfileController::class)->group(function (){
+        Route::controller(ProfileController::class)->group(function () {
 
-            // Route::get('profile')
+            Route::get('profile', 'getProfile');
         });
 
         Route::controller(MailController::class)->group(function () {
