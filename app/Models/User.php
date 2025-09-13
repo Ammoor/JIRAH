@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, HasApiTokens, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -18,9 +18,26 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'nick_name',
+        'user_name', // Unique per user. Used when the user wants to share his profile link.
+        'gender',
+        'birth_day',
+        'birth_month',
+        'birth_year',
+        'role',
+        'country_code',
+        'phone',
+        'location',
         'email',
         'password',
+        'is_active',
+        'has_auth_account',
+        'is_email_verified',
+        'is_phone_verified',
+        'login_count',
+        'last_login',
     ];
 
     /**
@@ -41,8 +58,13 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
+            'location' => 'object',
             'password' => 'hashed',
         ];
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class, 'user_id', 'id');
     }
 }
