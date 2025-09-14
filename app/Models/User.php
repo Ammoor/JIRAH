@@ -67,4 +67,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(Profile::class, 'user_id', 'id');
     }
+    public function PendingMailVerification()
+    {
+        return $this->hasOne(PendingMailVerification::class, 'user_id', 'id');
+    }
 }
