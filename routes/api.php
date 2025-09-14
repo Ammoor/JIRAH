@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MailController;
 use App\Http\Middleware\ApiKeyMiddleware;
+use App\Http\Middleware\IsUserVerified;
 
 Route::middleware(ApiKeyMiddleware::class)->group(function () {
 
@@ -17,14 +18,17 @@ Route::middleware(ApiKeyMiddleware::class)->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
 
-        Route::controller(UserController::class)->group(function () {
+        Route::middleware(IsUserVerified::class)->group(function () {
 
-            Route::post('logout', 'logout');
-        });
+            Route::controller(UserController::class)->group(function () {
 
-        Route::controller(ProfileController::class)->group(function () {
+                Route::post('logout', 'logout');
+            });
 
-            Route::get('profile', 'getProfile');
+            Route::controller(ProfileController::class)->group(function () {
+
+                Route::get('profile', 'getProfile');
+            });
         });
 
         Route::controller(MailController::class)->group(function () {

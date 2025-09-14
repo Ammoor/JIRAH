@@ -7,8 +7,10 @@ use App\Services\ProfileService;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class UserService
 {
@@ -48,6 +50,9 @@ class UserService
         $user = auth()->attempt(['email' => $userData['email'], 'password' => $userData['password']]) ? auth()->user() : null;
         if (!$user) {
             throw new NotFoundHttpException('User credentials does not match DB records.');
+        }
+        if (!Gate::allows('is_user_verified')) {
+            throw new AccessDeniedHttpException('Access denied: user\'s account not verified.');
         }
         $userToken = $user->createToken('user_token')->plainTextToken;
         return [
