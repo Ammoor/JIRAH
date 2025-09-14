@@ -18,7 +18,7 @@ class ApiKeyMiddleware
     {
         $apiKey = $request->header('X-API-KEY');
         if ($apiKey !== config('app.api_key')) {
-            throw new AuthenticationException();
+            throw new AuthenticationException('API key is missing or invalid.');
         }
         return $next($request);
     }

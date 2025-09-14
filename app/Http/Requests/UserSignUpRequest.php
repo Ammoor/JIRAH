@@ -26,9 +26,7 @@ class UserSignUpRequest extends FormRequest
             'first_name' => ['required', 'alpha', 'max:100'],
             'last_name' => ['required', 'alpha', 'max:100'],
             'gender' => ['required', 'in:male,female'],
-            'birth_day' => ['required', 'integer', 'min:1', 'max:31'],
-            'birth_month' => ['required', 'integer', 'min:1', 'max:12'],
-            'birth_year' => ['required', 'integer', 'max:' . now()->year],
+            'birth_date' => ['required', 'date', 'before:today'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
             'password' =>  [
                 'required',
@@ -47,9 +45,6 @@ class UserSignUpRequest extends FormRequest
                     - Has not been compromised in data leaks.
                 */
             ],
-            'delivery_latlng' => ['sometimes', 'required', 'array', 'size:2'],
-            'delivery_latlng.latitude' => ['required_with:delivery_latlng', 'numeric', 'between:-90,90'],
-            'delivery_latlng.longitude' => ['required_with:delivery_latlng', 'numeric', 'between:-180,180'],
         ];
     }
 }

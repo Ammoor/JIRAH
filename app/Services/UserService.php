@@ -19,12 +19,11 @@ class UserService
         $this->userRepository = $userRepository;
         $this->profileService = $profileService;
     }
-    private function checkAgeEligibility(int $birthDay, int $birthMonth, int $birthYear)
+    private function checkAgeEligibility(string $birthDate)
     {
         $minimumAge = 13; // Means the minimum user age that can be join to the system. In years.
-        $birthDate = Carbon::createFromDate($birthYear, $birthMonth, $birthDay);
-        $userAge = $birthDate->age;
-        if ($userAge < $minimumAge) {
+        $birthDate = Carbon::createFromFormat('Y-m-d', $birthDate);
+        if ($birthDate->age < $minimumAge) {
             throw ValidationException::withMessages(['birth_date' => "User must be at least {$minimumAge} years old."]);
         }
     }
@@ -32,7 +31,7 @@ class UserService
     {
         return DB::transaction(function () use ($userData) {
 
-            $this->checkAgeEligibility($userData['birth_day'], $userData['birth_month'], $userData['birth_year']);
+            $this->checkAgeEligibility($userData['birth_date']);
             $userData['password'] = Hash::make($userData['password']);
             $userData['user_name'] = $userData['first_name'] . '.' . $userData['last_name'] . '.' . time();
             $user = $this->userRepository->create($userData);

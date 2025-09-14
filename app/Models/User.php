@@ -23,9 +23,7 @@ class User extends Authenticatable
         'nick_name',
         'user_name', // Unique per user. Used when the user wants to share his profile link.
         'gender',
-        'birth_day',
-        'birth_month',
-        'birth_year',
+        'birth_date',
         'role',
         'country_code',
         'phone',
@@ -63,6 +61,10 @@ class User extends Authenticatable
         ];
     }
 
+    public function authAccounts()
+    {
+        return $this->hasMany(AuthAccount::class, 'user_id', 'id');
+    }
     public function profile()
     {
         return $this->hasOne(Profile::class, 'user_id', 'id');

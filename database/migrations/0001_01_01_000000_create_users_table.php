@@ -17,16 +17,14 @@ return new class extends Migration
             $table->string('last_name', 100);
             $table->string('nick_name', 100)->nullable();
             $table->string('user_name', 100); // Unique per user. Used when the user wants to share his profile link.
-            $table->enum('gender', ['male', 'female']);
-            $table->unsignedInteger('birth_day');
-            $table->unsignedInteger('birth_month');
-            $table->unsignedInteger('birth_year');
+            $table->enum('gender', ['male', 'female'])->nullable();
+            $table->date('birth_date')->nullable();
             $table->enum('role', ['user', 'admin'])->default('user');
-            $table->string('country_code', 10)->default('+20');
+            $table->string('country_code', 10)->nullable();
             $table->string('phone', 30)->nullable();
             $table->json('location')->nullable();
             $table->string('email');
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->boolean('is_active')->default(true);
             $table->boolean('has_auth_account')->default(false);
             $table->boolean('is_email_verified')->default(false);
